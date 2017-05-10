@@ -1,11 +1,11 @@
 -- Mathy stuff for simple programs
 module Mathy
-( fib
+( fac
 ) where
 
 
-fib :: Integer -> Integer
-fib n
+fac :: Integer -> Integer
+fac n
     | n < 0 = error "negative number"
     | n == 0 = 1
-    | otherwise = n * fib (n - 1)
+    | otherwise = n * fac (n - 1)
