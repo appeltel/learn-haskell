@@ -22,17 +22,16 @@ getIndex :: [Integer] -> Integer -> Integer
 getIndex (x:xs) 0 = x
 getIndex (x:xs) n = getIndex xs (n - 1)
 
+memoize :: (Integer -> Integer) -> (Integer -> Integer)
+memoize f = getIndex (map f (map toInteger [0 ..]))
+
+fix :: (a -> a) -> a
+fix f = let x = f x in x
+
+cfib :: (Integer -> Integer) -> Integer -> Integer
+cfib f 1 = 1
+cfib f 2 = 1
+cfib f n = f (n-1) + f (n-2)
+
 ffib :: Integer -> Integer
-ffib = getIndex (map f (map toInteger [0 ..]))
-    where f 1 = 1
-          f 2 = 2
-          f n = ffib (n-2) + ffib (n-1)
-
---memoize :: (Integer -> Integer) -> (Integer -> Integer)
---memoize f = getIndex (map f (map toInteger [0 ..]))
-
---fix :: (a -> a) -> a
---fix f = let {x = f x} in x
-
---ffib :: Integer -> Integer
---ffib = fix (memoize . fib)
+ffib = fix (memoize . cfib)
