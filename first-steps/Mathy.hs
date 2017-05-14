@@ -2,7 +2,12 @@
 module Mathy
 ( fac,
   fib,
-  ffib
+  ffib,
+  singleton,
+  treeInsert,
+  treeElem,
+  treeExtend,
+  Tree(EmptyTree, Node),
 ) where
 
 fac :: Integer -> Integer
@@ -56,5 +61,6 @@ treeElem x (Node a left right)
     | x < a = treeElem x left
     | x > a = treeElem x right
 
-listToTree :: (Ord a) => [a] -> Tree a
-listToTree x = foldr treeInsert EmptyTree x
+treeExtend :: (Ord a) => [a] -> Tree a -> Tree a
+treeExtend [] t = t
+treeExtend (x:xs) t = treeExtend xs (treeInsert x t)
