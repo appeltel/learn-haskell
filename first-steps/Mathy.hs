@@ -7,6 +7,9 @@ module Mathy
   treeInsert,
   treeElem,
   treeExtend,
+  countTreeInsert,
+  countTreeElem,
+  countTreeExtend,
   Tree(EmptyTree, Node),
 ) where
 
@@ -64,3 +67,20 @@ treeElem x (Node a left right)
 treeExtend :: (Ord a) => [a] -> Tree a -> Tree a
 treeExtend [] t = t
 treeExtend (x:xs) t = treeExtend xs (treeInsert x t)
+
+countTreeInsert :: (Ord a) => a -> Tree (a, Int) -> Tree (a, Int)
+countTreeInsert x EmptyTree = singleton (x, 1)
+countTreeInsert x (Node (a, n) left right)
+    | x == a = Node (a, n+1) left right
+    | x < a = Node (a, n) (countTreeInsert x left) right
+    | x > a = Node (a, n) left (countTreeInsert x right)
+
+countTreeElem :: (Ord a) => a -> Tree (a, Int) -> Int
+countTreeElem x EmptyTree = 0
+countTreeElem x (Node (a, n) left right)
+    | x == a = n
+    | x < a = countTreeElem x left
+    | x > a = countTreeElem x right
+countTreeExtend :: (Ord a) => [a] -> Tree (a, Int) -> Tree (a, Int)
+countTreeExtend [] t = t
+countTreeExtend (x:xs) t = countTreeExtend xs (countTreeInsert x t)
