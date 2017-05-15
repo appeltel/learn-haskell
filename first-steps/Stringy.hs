@@ -16,16 +16,18 @@ aSplitWords (x, y)
     | (word, remainder) == ([], []) = (x, y)
     | remainder == [] = (x++[word], [])
     | otherwise = aSplitWords (x++[word], remainder)
-    where (word, remainder) = getNextWord ([], y)
+    where (word, remainder) = getNextWord y
 
-getNextWord :: (String, String) -> (String, String)
-getNextWord (x, []) = (x, [])
-getNextWord ([], (x:xs))
-    | not (isAlphaNum x) = getNextWord ([], xs)
-    | otherwise = getNextWord ([x], xs)
-getNextWord (a, (x:xs))
-    | not (isAlphaNum x) = (a, (x:xs))
-    | otherwise = getNextWord ((a ++ [x]), xs)
+getNextWord :: String -> (String, String)
+getNextWord [] = ([], [])
+getNextWord (x:[])
+    | isAlphaNum x = ([x], [])
+    | otherwise = ([], [])
+getNextWord (x:(xs@(y:_)))
+    | isAlphaNum x && isAlphaNum y = ((x:word), xs')
+    | isAlphaNum x = ([x], xs)
+    | otherwise = (word, xs')
+    where (word, xs') = getNextWord xs
 
 trimleft :: String -> String
 trimleft [] = []
